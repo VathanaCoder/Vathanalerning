@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VATHANA School Planner</title>
+<link rel="icon" type="image/png" href="assets/icons/icons8-national-48.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700;800&family=Noto+Sans+Khmer:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Top status / ceremony banners -->
+<div id="bannerStack" class="banner-stack"></div>
+
+<!-- ============ HOME PAGE ============ -->
+<main id="page-home" class="page active">
+  <header class="home-head">
+    <div class="brand-row">
+      <div class="brand-mark">
+        <img src="assets/icons/icons8-national-48.png" alt="">
+        <span>VATHANA</span>
+      </div>
+      <button class="icon-btn-ghost" id="settingsShortcut" aria-label="Settings">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 13a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V19a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H4a2 2 0 110-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H10a1.65 1.65 0 001-1.51V4a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V10a1.65 1.65 0 001.51 1H20a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="1.2"/></svg>
+      </button>
+    </div>
+    <div class="greet-row">
+      <div>
+        <p class="greeting" id="greetingText">Good Morning</p>
+        <p class="date-line" id="dateLine">Wednesday, November 4</p>
+      </div>
+      <div class="clock-wrap">
+        <span id="clockTime" class="clock-time">08:25</span>
+        <span id="clockMeridian" class="clock-meridian">AM</span>
+      </div>
+    </div>
+  </header>
+
+  <section id="ceremonyCard" class="badge-card ceremony-card hidden">
+    <span class="badge-dot flag-dot"></span>
+    <p id="ceremonyText"></p>
+  </section>
+
+  <section id="cleaningCard" class="badge-card cleaning-card hidden">
+    <span class="badge-dot clean-dot"></span>
+    <p id="cleaningText" data-i18n="cleaningReminder"></p>
+    <button id="cleaningDoneBtn" class="btn-ghost-sm" data-i18n="markDone">Mark done</button>
+  </section>
+
+  <section id="nowCard" class="now-card">
+    <div class="now-card-top">
+      <span class="now-label" data-i18n="nowLearning">NOW LEARNING</span>
+      <span id="nowStatusBadge" class="status-badge">—</span>
+    </div>
+    <div class="now-subject-row">
+      <div id="nowIconWrap" class="subject-icon-wrap">
+        <img id="nowIcon" class="subject-icon" src="" alt="">
+      </div>
+      <div>
+        <p id="nowSubject" class="now-subject">—</p>
+        <p id="nowTime" class="now-time">—</p>
+      </div>
+    </div>
+    <div class="next-row">
+      <span data-i18n="next">Next class:</span>
+      <span id="nextSubject">—</span>
+    </div>
+  </section>
+
+  <section id="freeTimeCard" class="info-card free-card hidden">
+    <div class="free-head">
+      <span data-i18n="freeTime">FREE TIME</span>
+      <span id="freeCountdown" class="free-countdown">10:00</span>
+    </div>
+    <div class="free-bar"><div id="freeBarFill" class="free-bar-fill"></div></div>
+    <p id="freeMsg" class="free-msg"></p>
+  </section>
+
+  <section class="progress-card">
+    <div class="progress-head">
+      <span data-i18n="todaysProgress">Today's Progress</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+    <p id="progressSub" class="progress-sub">0 / 0 lessons completed</p>
+  </section>
+
+  <section class="section-block">
+    <h2 class="section-title" data-i18n="todaySchedule">Today's Schedule</h2>
+    <div id="todayScheduleList" class="schedule-list"></div>
+  </section>
+
+  <section class="section-block">
+    <h2 class="section-title" data-i18n="todaysBooks">Today's Books</h2>
+    <div id="todayBooksList" class="chip-row"></div>
+  </section>
+
+  <section class="section-block">
+    <button class="assistant-card" id="buddyMiniHome" aria-label="VATHANA Assistant">
+      <span class="assistant-avatar"><svg id="buddyMiniSvg" viewBox="0 0 200 200" class="buddy-svg"></svg></span>
+      <span class="assistant-body">
+        <span class="assistant-label" data-i18n="assistantLabel">VATHANA ASSISTANT</span>
+        <span class="assistant-msg" id="buddyMiniMsg">Good morning. Your first class starts at 7:00 AM.</span>
+      </span>
+    </button>
+  </section>
+
+  <section class="section-block tomorrow-block">
+    <h2 class="section-title" data-i18n="tomorrowPreview">Tomorrow's Preview</h2>
+    <div id="tomorrowCard" class="info-card tomorrow-card"></div>
+  </section>
+
+  <div class="footer-pad"></div>
+</main>
+
+<!-- ============ TIMETABLE PAGE ============ -->
+<main id="page-timetable" class="page">
+  <header class="page-head"><h1 data-i18n="timetable">Timetable</h1></header>
+  <div id="dayTabs" class="day-tabs"></div>
+  <div id="timetableList" class="schedule-list timetable-list"></div>
+  <div class="footer-pad"></div>
+</main>
+
+<!-- ============ MY BOOKS PAGE ============ -->
+<main id="page-books" class="page">
+  <header class="page-head"><h1 data-i18n="myBooks">My Books</h1></header>
+
+  <section class="section-block">
+    <h2 class="section-title" data-i18n="tomorrowBag">Tomorrow's School Bag</h2>
+    <div class="progress-card thin">
+      <div class="progress-bar"><div id="packFill" class="progress-fill"></div></div>
+      <p id="packSub" class="progress-sub">0 / 0 packed</p>
+    </div>
+    <div id="packList" class="checklist"></div>
+  </section>
+
+  <section class="section-block">
+    <div class="row-between">
+      <h2 class="section-title" data-i18n="allBooks">All Books</h2>
+      <button id="addBookBtn" class="pill-btn small">+ <span data-i18n="addBook">Add Book</span></button>
+    </div>
+    <div id="booksList" class="books-list"></div>
+  </section>
+  <div class="footer-pad"></div>
+</main>
+
+<!-- ============ BUDDY PAGE ============ -->
+<main id="page-buddy" class="page">
+  <header class="page-head"><h1 data-i18n="schoolBuddy">School Buddy</h1></header>
+  <div class="buddy-stage">
+    <div class="speech-bubble big" id="buddyBigMsg">Hey bro! Ready to learn?</div>
+    <button id="buddyChar" class="buddy-char" aria-label="School Buddy">
+      <svg id="buddySvg" viewBox="0 0 200 200" class="buddy-svg"></svg>
+    </button>
+    <p class="buddy-hint" data-i18n="tapBuddy">Tap me!</p>
+  </div>
+  <div class="footer-pad"></div>
+</main>
+
+<!-- ============ SETTINGS PAGE ============ -->
+<main id="page-settings" class="page">
+  <header class="page-head"><h1 data-i18n="settings">Settings</h1></header>
+
+  <section class="settings-group">
+    <h3 data-i18n="language">Language</h3>
+    <div class="seg" id="langSeg">
+      <button data-val="km" class="seg-btn">ខ្មែរ</button>
+      <button data-val="en" class="seg-btn active">English</button>
+    </div>
+  </section>
+
+  <section class="settings-group">
+    <h3 data-i18n="theme">Theme</h3>
+    <div class="seg" id="themeSeg">
+      <button data-val="light" class="seg-btn active" data-i18n="light">Light</button>
+      <button data-val="dark" class="seg-btn" data-i18n="dark">Dark</button>
+    </div>
+  </section>
+
+  <section class="settings-group">
+    <h3 data-i18n="afternoonEnd">Afternoon Ending Time</h3>
+    <div class="seg" id="afternoonSeg">
+      <button data-val="16" class="seg-btn active">4:00 PM</button>
+      <button data-val="17" class="seg-btn">5:00 PM</button>
+    </div>
+  </section>
+
+  <section class="settings-group">
+    <h3 data-i18n="breakDuration">Free-Time Break Duration</h3>
+    <div class="slider-row">
+      <input type="range" id="breakSlider" min="5" max="20" step="1" value="10">
+      <span id="breakVal">10 min</span>
+    </div>
+  </section>
+
+  <section class="settings-group">
+    <h3 data-i18n="reminders">Reminders</h3>
+    <div class="toggle-row"><span data-i18n="r_before">10 min before school</span><label class="switch"><input type="checkbox" id="rem_before" checked><span class="slider-pill"></span></label></div>
+    <div class="toggle-row"><span data-i18n="r_start">School starting time</span><label class="switch"><input type="checkbox" id="rem_start" checked><span class="slider-pill"></span></label></div>
+    <div class="toggle-row"><span data-i18n="r_subject">Subject changes</span><label class="switch"><input type="checkbox" id="rem_subject" checked><span class="slider-pill"></span></label></div>
+    <div class="toggle-row"><span data-i18n="r_break">Break ending</span><label class="switch"><input type="checkbox" id="rem_break" checked><span class="slider-pill"></span></label></div>
+    <div class="toggle-row"><span data-i18n="r_afternoon">Afternoon starting</span><label class="switch"><input type="checkbox" id="rem_afternoon" checked><span class="slider-pill"></span></label></div>
+    <div class="toggle-row"><span data-i18n="r_cleaning">Cleaning duty</span><label class="switch"><input type="checkbox" id="rem_cleaning" checked><span class="slider-pill"></span></label></div>
+    <div class="toggle-row"><span data-i18n="r_flag">National Flag Ceremony</span><label class="switch"><input type="checkbox" id="rem_flag" checked><span class="slider-pill"></span></label></div>
+    <button id="notifPermBtn" class="pill-btn outline full" data-i18n="enableNotif">Enable browser notifications</button>
+  </section>
+
+  <section class="settings-group">
+    <h3 data-i18n="buddySettings">Buddy</h3>
+    <div class="toggle-row"><span data-i18n="mascotSound">Mascot sound</span><label class="switch"><input type="checkbox" id="mascotSound" checked><span class="slider-pill"></span></label></div>
+    <div class="toggle-row"><span data-i18n="mascotAnim">Mascot animations</span><label class="switch"><input type="checkbox" id="mascotAnim" checked><span class="slider-pill"></span></label></div>
+  </section>
+
+  <section class="settings-group">
+    <h3 data-i18n="editTimetable">Edit Timetable</h3>
+    <p class="settings-hint" data-i18n="editTimetableHint">Go to Timetable, tap any subject to rename it.</p>
+  </section>
+
+  <section class="settings-group">
+    <h3 data-i18n="manageBooks">Manage Books</h3>
+    <p class="settings-hint" data-i18n="manageBooksHint">Go to My Books to add, edit, or delete books.</p>
+  </section>
+
+  <section class="settings-group">
+    <button id="resetDataBtn" class="pill-btn danger full" data-i18n="resetData">Reset All Data</button>
+  </section>
+
+  <p class="footer-credit">Made by VATHANA © 2026</p>
+  <div class="footer-pad"></div>
+</main>
+
+<!-- ============ MASCOT (floating, home only) ============ -->
+<button id="floatMascot" class="float-mascot" aria-label="School Buddy">
+  <svg id="floatBuddySvg" viewBox="0 0 200 200" class="buddy-svg"></svg>
+  <span id="floatBubble" class="float-bubble hidden"></span>
+</button>
+
+<!-- ============ BOTTOM NAV ============ -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-page="home">
+    <span class="nav-ico">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 11.5L12 4l9 7.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 10v9a1 1 0 001 1H9.5a1 1 0 001-1v-4a1 1 0 011-1h1a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1v-9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span><span data-i18n="navHome">Home</span>
+  </button>
+  <button class="nav-btn" data-page="timetable">
+    <span class="nav-ico">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 9.5h17M8 3v3.5M16 3v3.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    </span><span data-i18n="navTimetable">Schedule</span>
+  </button>
+  <button class="nav-btn" data-page="books">
+    <span class="nav-ico">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 5.5A2.5 2.5 0 016.5 3H12v18H6.5A2.5 2.5 0 014 18.5v-13z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M20 5.5A2.5 2.5 0 0017.5 3H12v18h5.5a2.5 2.5 0 002.5-2.5v-13z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+    </span><span data-i18n="navBooks">My Books</span>
+  </button>
+  <button class="nav-btn" data-page="buddy">
+    <span class="nav-ico">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="4" width="17" height="15" rx="5" stroke="currentColor" stroke-width="1.7"/><circle cx="9.3" cy="11" r="1.1" fill="currentColor"/><circle cx="14.7" cy="11" r="1.1" fill="currentColor"/><path d="M9.5 14.5c1 .9 4 .9 5 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </span><span data-i18n="navBuddy">Assistant</span>
+  </button>
+  <button class="nav-btn" data-page="settings">
+    <span class="nav-ico">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 13a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V19a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H4a2 2 0 110-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H10a1.65 1.65 0 001-1.51V4a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V10a1.65 1.65 0 001.51 1H20a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="1.1"/></svg>
+    </span><span data-i18n="navSettings">Settings</span>
+  </button>
+</nav>
+
+<!-- ============ ADD/EDIT BOOK MODAL ============ -->
+<div id="bookModal" class="modal-overlay hidden">
+  <div class="modal-sheet">
+    <h3 id="bookModalTitle" data-i18n="addBook">Add Book</h3>
+    <label data-i18n="bookName">Book name</label>
+    <input type="text" id="bookNameInput" placeholder="e.g. Mathematics Book">
+    <label data-i18n="assignSubjects">Assign to subjects</label>
+    <div id="bookSubjectChecks" class="subject-check-list"></div>
+    <div class="modal-actions">
+      <button id="bookCancelBtn" class="pill-btn outline" data-i18n="cancel">Cancel</button>
+      <button id="bookSaveBtn" class="pill-btn" data-i18n="save">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ RENAME SUBJECT MODAL ============ -->
+<div id="renameModal" class="modal-overlay hidden">
+  <div class="modal-sheet">
+    <h3 data-i18n="renameSubject">Rename Subject</h3>
+    <input type="text" id="renameInput">
+    <div class="modal-actions">
+      <button id="renameCancelBtn" class="pill-btn outline" data-i18n="cancel">Cancel</button>
+      <button id="renameSaveBtn" class="pill-btn" data-i18n="save">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
